@@ -1,0 +1,93 @@
+---
+hadoop_version: "3.3.5"
+hadoop_distro_file: "hadoop-{{ hadoop_version }}.tar.gz"
+hadoop_distro_url: "https://archive.apache.org/dist/hadoop/common/hadoop-{{ hadoop_version }}/{{ hadoop_distro_file }}"
+hadoop_group_name: hadoop
+hadoop_base_dir: /opt/hadoop
+hadoop_home_dir: "{{ hadoop_base_dir }}/current"
+hadoop_conf_dir: "/etc/hadoop"
+hadoop_log_dir: "/var/log/hadoop"
+hadoop_pid_dir: "/tmp"
+hadoop_hdfs_user_name: hdfs
+hadoop_hdfs_data_dir: "/var/lib/hadoop-{{ hadoop_hdfs_user_name }}"
+hadoop_hdfs_namenode_service_name: hadoop-hdfs-namenode.service
+hadoop_hdfs_namenode_service_state: stopped
+hadoop_hdfs_namenode_service_enabled: yes
+hadoop_hdfs_secondarynamenode_service_name: hadoop-hdfs-secondarynamenode.service
+hadoop_hdfs_secondarynamenode_service_state: stopped
+hadoop_hdfs_secondarynamenode_service_enabled: yes
+hadoop_hdfs_datanode_service_name: hadoop-hdfs-datanode.service
+hadoop_hdfs_datanode_service_state: stopped
+hadoop_hdfs_datanode_service_enabled: yes
+
+hadoop_mapred_user_name: mapred
+hadoop_mapred_data_dir: "/var/lib/hadoop-{{ hadoop_mapred_user_name }}"
+hadoop_mapred_historyserver_service_name: hadoop-mapreduce-historyserver.service
+hadoop_mapred_historyserver_service_state: stopped
+hadoop_mapred_historyserver_service_enabled: yes
+
+hadoop_yarn_user_name: yarn
+hadoop_yarn_data_dir: "/var/lib/hadoop-{{ hadoop_yarn_user_name }}"
+hadoop_yarn_resourcemanager_service_name: hadoop-yarn-resourcemanager.service
+hadoop_yarn_resourcemanager_service_state: stopped
+hadoop_yarn_resourcemanager_service_enabled: yes
+hadoop_yarn_nodemanager_service_name: hadoop-yarn-nodemanager.service
+hadoop_yarn_nodemanager_service_state: stopped
+hadoop_yarn_nodemanager_service_enabled: yes
+
+
+# hadoop-env.sh
+hadoop_java_home: /etc/alternatives/jre
+hadoop_hdfs_namenode_opts:
+  - -Dhadoop.security.logger=INFO,RFAS
+hadoop_hdfs_secondarynamenode_opts:
+  - -Dhadoop.security.logger=INFO,RFAS
+hadoop_hdfs_datanode_opts:
+  - -Dhadoop.security.logger=ERROR,RFAS
+
+# core-site.xml
+hadoop_fs_defaultfs: "hdfs://0.0.0.0:9000"
+hadoop_io_file_buffer_size: "131072"
+
+# hdfs-site.xml
+hadoop_dfs_blocksize: "268435456" # 256Mb
+hadoop_dfs_replication: "3"
+hadoop_dfs_namenode_name_dir: "{{ hadoop_hdfs_data_dir }}/dfs/name"
+hadoop_dfs_namenode_checkpoint_dir: "{{ hadoop_hdfs_data_dir }}/dfs/namesecondary"
+hadoop_dfs_datanode_data_dir: "{{ hadoop_hdfs_data_dir }}/dfs/data"
+
+# mapred-env.sh
+hadoop_mapred_historyserver_opts: []
+
+# mapred-site.xml
+hadoop_mapreduce_framework_name: yarn
+hadoop_mapreduce_map_memory_mb: "1536"
+hadoop_mapreduce_map_java_opts: "-Xmx1024M"
+hadoop_mapreduce_reduce_memory_mb: "3072"
+hadoop_mapreduce_reduce_java_opts: "-Xmx2560M"
+hadoop_mapreduce_reduce_shuffle_parallelcopies: "50"
+hadoop_mapreduce_task_io_sort_mb: "512"
+hadoop_mapreduce_task_io_sort_factor: "100"
+hadoop_mapreduce_jobhistory_address: "0.0.0.0:10020"
+hadoop_mapreduce_jobhistory_webapp_address: "0.0.0.0:19888"
+hadoop_mapreduce_jobhistory_intermediate_done_dir: "/mr-history/tmp"
+hadoop_mapreduce_jobhistory_done_dir: "/mr-history/done"
+
+# yarn-env.sh
+hadoop_yarn_resourcemanager_opts: []
+hadoop_yarn_nodemanager_opts: []
+
+# yarn-site.xml
+hadoop_yarn_nodemanager_aux_services: mapreduce_shuffle
+hadoop_yarn_nodemanager_env_whitelist:
+  - JAVA_HOME
+  - HADOOP_COMMON_HOME
+  - HADOOP_HDFS_HOME
+  - HADOOP_CONF_DIR
+  - CLASSPATH_PREPEND_DISTCACHE
+  - HADOOP_YARN_HOME
+  - HADOOP_HOME
+  - PATH
+  - LANG
+  - TZ
+  - HADOOP_MAPRED_HOME

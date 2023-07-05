@@ -1,0 +1,19 @@
+[Unit]
+Description=Hadoop HDFS Datanode daemon
+Requires=network.target
+After=network.target
+
+[Service]
+Type=forking
+WorkingDirectory={{ hadoop_hdfs_data_dir }}
+RuntimeDirectory={{ hadoop_pid_dir }}
+User={{ hadoop_hdfs_user_name }}
+Group={{ hadoop_group_name }}
+ExecStart={{ hadoop_home_dir }}/bin/hdfs --daemon start datanode
+ExecStop={{ hadoop_home_dir }}/bin/hdfs --daemon stop datanode
+TimeoutSec=30
+Restart=on-failure
+SuccessExitStatus=143
+
+[Install]
+WantedBy=default.target

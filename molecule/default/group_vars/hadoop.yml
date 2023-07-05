@@ -1,0 +1,15 @@
+---
+java_version: "8"
+java_type: jdk
+hadoop_version: "{{ lookup('env', 'HADOOP_VERSION') }}"
+hadoop_group_id: "7000"
+hadoop_hdfs_user_id: "7800"
+hadoop_yarn_user_id: "7801"
+hadoop_mapred_user_id: "7802"
+hadoop_dfs_replication: "1"
+hadoop_hdfs_namenode_service_state: started
+hadoop_hdfs_secondarynamenode_service_state: started
+hadoop_hdfs_datanode_service_state: started
+hadoop_mapred_historyserver_service_state: started
+hadoop_yarn_resourcemanager_service_state: started
+hadoop_yarn_nodemanager_service_state: started

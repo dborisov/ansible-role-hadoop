@@ -1,0 +1,37 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: "${IMAGE:-rockylinux}-${TAG:-9}-hadoop-${HADOOP_VERSION:-3.3.5}"
+    hostname: hadoop
+    image: "${NAMESPACE:-rockylinux}/${IMAGE:-rockylinux}:${TAG:-9-ubi-init}"
+    pre_build_image: true
+    privileged: true
+    cgroupns_mode: host
+    command: /sbin/init
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    published_ports:
+      - "0.0.0.0:9870:9870/tcp" # Namenode web UI
+      - "0.0.0.0:9868:9868/tcp" # Secondary Namenode web UI
+      - "0.0.0.0:9864:9864/tcp" # Datanode web UI
+      - "0.0.0.0:19888:19888/tcp" # MapReduce Job History Server web UI
+      - "0.0.0.0:8088:8088/tcp" # YARN Resource Manager web UI
+      - "0.0.0.0:8042:8042/tcp" # YARN Node Manager web UI
+    groups:
+      - hadoop
+provisioner:
+  name: ansible
+  env:
+    HADOOP_VERSION: ${HADOOP_VERSION:-3.3.5}
+verifier:
+  name: ansible
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
