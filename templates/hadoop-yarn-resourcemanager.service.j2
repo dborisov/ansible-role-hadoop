@@ -1,0 +1,19 @@
+[Unit]
+Description=Hadoop YARN Resource Manager daemon
+Requires=network.target
+After=network.target
+
+[Service]
+Type=forking
+WorkingDirectory={{ hadoop_yarn_data_dir }}
+RuntimeDirectory={{ hadoop_pid_dir }}
+User={{ hadoop_yarn_user_name }}
+Group={{ hadoop_group_name }}
+ExecStart={{ hadoop_home_dir }}/bin/yarn --daemon start resourcemanager
+ExecStop={{ hadoop_home_dir }}/bin/yarn --daemon stop resourcemanager
+TimeoutSec=30
+Restart=on-failure
+SuccessExitStatus=143
+
+[Install]
+WantedBy=default.target

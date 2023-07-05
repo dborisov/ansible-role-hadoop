@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: Denis Borisov
+  namespace: dborisov
+  role_name: hadoop
+  description: Ansible role to install Apache Hadoop
+  license: MIT
+  min_ansible_version: "2.12"
+  platforms:
+    - name: EL
+      versions:
+        - "8"
+        - "9"
+  galaxy_tags:
+    - hadoop
+
+dependencies: []

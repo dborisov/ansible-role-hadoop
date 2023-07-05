@@ -1,0 +1,19 @@
+[Unit]
+Description=Hadoop MapReduce Job History Server daemon
+Requires=network.target
+After=network.target
+
+[Service]
+Type=forking
+WorkingDirectory={{ hadoop_mapred_data_dir }}
+RuntimeDirectory={{ hadoop_pid_dir }}
+User={{ hadoop_mapred_user_name }}
+Group={{ hadoop_group_name }}
+ExecStart={{ hadoop_home_dir }}/bin/mapred --daemon start historyserver
+ExecStop={{ hadoop_home_dir }}/bin/mapred --daemon stop historyserver
+TimeoutSec=30
+Restart=on-failure
+SuccessExitStatus=143
+
+[Install]
+WantedBy=default.target
